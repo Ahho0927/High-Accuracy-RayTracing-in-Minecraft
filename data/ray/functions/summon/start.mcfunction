@@ -1,2 +1,2 @@
-summon minecraft:marker ^ ^ ^.1 {Tags: ["rt", "rt_tracer", "init"]}
+summon minecraft:marker ^ ^ ^.1 {Tags: ["rt", "rt_tracer"]}
 function ray:summon/setup
