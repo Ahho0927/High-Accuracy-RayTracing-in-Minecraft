@@ -2,9 +2,9 @@ scoreboard objectives add rt_delta_x dummy
 scoreboard objectives add rt_delta_y dummy
 scoreboard objectives add rt_delta_z dummy
 
-scoreboard objectives add rt_shooter_x dummy
-scoreboard objectives add rt_shooter_y dummy
-scoreboard objectives add rt_shooter_z dummy
+scoreboard objectives add rt_original_x dummy
+scoreboard objectives add rt_original_y dummy
+scoreboard objectives add rt_original_z dummy
 
 scoreboard objectives add rt_abs_x dummy
 scoreboard objectives add rt_abs_y dummy
