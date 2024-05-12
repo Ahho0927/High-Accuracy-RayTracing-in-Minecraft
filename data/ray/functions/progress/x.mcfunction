@@ -1,32 +1,56 @@
-scoreboard players operation @s rt_parameter += @s rt_progress_sign
+scoreboard players operation @s rt_progress_sign = @s rt_delta_x
+scoreboard players operation @s rt_progress_sign /= @s rt_abs_x
 
-tellraw @a {"score":{"name":"@s","objective":"rt_parameter"}}
-# y = (Δy / Δx)(x - rt_shooter_x) + rt_shooter_y
-scoreboard players operation @s rt_calc = @s rt_parameter
-scoreboard players operation @s rt_calc *= @s rt_delta_y
-scoreboard players operation @s rt_calc /= @s rt_delta_x
-scoreboard players operation @s rt_calc += @s rt_shooter_y
-scoreboard players operation @s rt_calc_result_y = @s rt_calc
+scoreboard players operation @s rt_start = @s rt_original_x
+execute if score @s rt_progress_sign matches ..-1 run scoreboard players add @s rt_start 10000
+scoreboard players operation @s rt_start /= 10000 const
+scoreboard players operation @s rt_start *= 10000 const
 
-# z = (Δz / Δx)(x - rt_shooter_x) + rt_shooter_z
-scoreboard players operation @s rt_calc = @s rt_parameter
-scoreboard players operation @s rt_calc *= @s rt_delta_z
-scoreboard players operation @s rt_calc /= @s rt_delta_x
-scoreboard players operation @s rt_calc += @s rt_shooter_z
-scoreboard players operation @s rt_calc_result_z = @s rt_calc
+scoreboard players operation @s rt_difference = @s rt_progress_sign
+scoreboard players operation @s rt_difference *= 10000 const
+scoreboard players operation @s rt_parameter = @s rt_start
 
-scoreboard players operation @s rt_calc_result_x = @s rt_parameter
-scoreboard players operation @s rt_calc_result_x += @s rt_shooter_x
+# repeat
+scoreboard players operation @s rt_parameter += @s rt_difference
 
-data merge entity @s {data: {calc_result: {x:0, y:0, z:0}}}
-execute store result entity @s data.calc_result.x float .0001 run scoreboard players get @s rt_calc_result_x
-execute store result entity @s data.calc_result.y float .0001 run scoreboard players get @s rt_calc_result_y
-execute store result entity @s data.calc_result.z float .0001 run scoreboard players get @s rt_calc_result_z
-tellraw @a {"entity":"@s", "nbt":"data.calc_result"}
+scoreboard players operation @s rt_result_y = @s rt_parameter
+scoreboard players operation @s rt_result_y -= @s rt_original_x
+scoreboard players operation @s rt_result_y *= @s rt_delta_y
+scoreboard players operation @s rt_result_y /= @s rt_delta_x
+scoreboard players operation @s rt_result_y += @s rt_original_y
 
-function ray:progress/detect_block with entity @s data.calc_result
-execute if score @s rt_detected matches 1 run kill @s
+scoreboard players operation @s rt_result_z = @s rt_parameter
+scoreboard players operation @s rt_result_z -= @s rt_original_x
+scoreboard players operation @s rt_result_z *= @s rt_delta_z
+scoreboard players operation @s rt_result_z /= @s rt_delta_x
+scoreboard players operation @s rt_result_z += @s rt_original_z
 
-# tellraw @a ["", {"text": "x: "}, {"score": {"name": "@s", "objective": "rt_calc_result_x"}}, {"text": ", y: "}, {"score": {"name": "@s", "objective": "rt_calc_result_y"}}, {"text": ", z: "}, {"score": {"name": "@s", "objective": "rt_calc_result_z"}}]
+# TODO 수를 정수부분과 소수부분으로 나누는 과정에서 나누기를 사용하는데, 마인크래프트의 나누기 연산은 반올림이 아닌 버림을 해버리므로, 이를 보와하기 위한 별도의 알고리즘이 필요하다. 아래는 그 시도의 흔적이다. 
+scoreboard players operation @s rt_parameter_integer = @s rt_parameter
+scoreboard players operation @s rt_parameter_integer /= 10000 const
+execute if score @s rt_parameter matches ..-1 run scoreboard players add @s rt_parameter_integer 1
+scoreboard players operation @s rt_parameter_decimal = @s rt_parameter
+scoreboard players operation @s rt_parameter_decimal %= 10000 const
+scoreboard players operation @s rt_result_y_integer = @s rt_result_y
+scoreboard players operation @s rt_result_y_integer /= 10000 const
+execute if score @s rt_result_y matches ..-1 run scoreboard players add @s rt_result_y_integer 1
+scoreboard players operation @s rt_result_y_decimal = @s rt_result_y
+scoreboard players operation @s rt_result_y_decimal %= 10000 const
+scoreboard players operation @s rt_result_z_integer = @s rt_result_z
+scoreboard players operation @s rt_result_z_integer /= 10000 const
+execute if score @s rt_result_z_integer matches ..-1 run scoreboard players add @s rt_result_z_integer 1
+scoreboard players operation @s rt_result_z_decimal = @s rt_result_z
+scoreboard players operation @s rt_result_z_decimal %= 10000 const
+execute if score @s rt_result_z_integer matches ..-1 run scoreboard players remove @s rt_result_z_decimal 10000
+execute if score @s rt_result_z_decimal matches ..-1 run scoreboard players operation @s rt_result_z_decimal *= -1 const
+tellraw @a ["", {"score": {"name":"@s", "objective":"rt_original_x"}}, {"text": " "}, {"score": {"name":"@s", "objective":"rt_original_y"}}, {"text": " "}, {"score": {"name":"@s", "objective":"rt_original_z"}}]
+# tellraw @a ["", {"score": {"name": "@s", "objective": "rt_result_y_integer"}}, {"text": " "}, {"score": {"name": "@s", "objective": "rt_result_y_decimal"}}, {"text": " "}, {"score": {"name": "@s", "objective": "rt_result_z_integer"}}, {"text": " "}, {"score": {"name": "@s", "objective": "rt_result_z_decimal"}}]
 
-execute if score @s rt_parameter matches 200000.. run kill @s
+data merge entity @s {data: {result: {x_integer:0, x_decimal:0, y_integer:0, y_decimal:0, z_integer:0, z_decimal:0}}}
+execute store result entity @s data.result.x_integer int 1 run scoreboard players get @s rt_parameter_integer
+execute store result entity @s data.result.x_decimal int 1 run scoreboard players get @s rt_parameter_decimal
+execute store result entity @s data.result.y_integer int 1 run scoreboard players get @s rt_result_y_integer
+execute store result entity @s data.result.y_decimal int 1 run scoreboard players get @s rt_result_y_decimal
+execute store result entity @s data.result.z_integer int 1 run scoreboard players get @s rt_result_z_integer
+execute store result entity @s data.result.z_decimal int 1 run scoreboard players get @s rt_result_z_decimal
+function ray:progress/detect_block with entity @s data.result

@@ -1,4 +1,5 @@
-execute anchored eyes run summon minecraft:marker ^ ^ ^ {Tags: ["rt", "rt_shooter", "init"]}
-execute anchored eyes positioned ^ ^ ^ store result entity @e[tag=rt_shooter, tag=init, limit=1, sort=nearest, distance=...01] Rotation[0] float .001 run data get entity @s Rotation[0] 1000
-execute anchored eyes positioned ^ ^ ^ store result entity @e[tag=rt_shooter, tag=init, limit=1, sort=nearest, distance=...01] Rotation[1] float .001 run data get entity @s Rotation[1] 1000
-execute as @e[tag=rt_shooter, tag=init] at @s run function ray:summon/start
+execute anchored eyes run summon minecraft:marker ^ ^ ^1 {Tags: ["rt", "rt_direction", "init"]}
+
+execute store result score @s rt_rotation run data get entity @s Rotation[1] 1000
+execute anchored eyes positioned ^ ^ ^ summon minecraft:marker run function ray:summon/calc
+execute unless score @s rt_rotation matches -45000..45000 anchored eyes positioned ^ ^ ^ run scoreboard players set @e[tag=rt_main, tag=init, limit=1, sort=nearest] rt_progress_direction 1
