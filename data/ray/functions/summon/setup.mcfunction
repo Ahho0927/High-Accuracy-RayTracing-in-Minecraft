@@ -2,9 +2,9 @@ execute store result score @s rt_original_x run data get entity @s Pos[0] 10000
 execute store result score @s rt_original_y run data get entity @s Pos[1] 10000
 execute store result score @s rt_original_z run data get entity @s Pos[2] 10000
 
-execute store result score @s rt_delta_x run data get entity @e[tag=rt_shooter, tag=init, limit=1, sort=nearest] Pos[0] 10000
-execute store result score @s rt_delta_y run data get entity @e[tag=rt_shooter, tag=init, limit=1, sort=nearest] Pos[1] 10000
-execute store result score @s rt_delta_z run data get entity @e[tag=rt_shooter, tag=init, limit=1, sort=nearest] Pos[2] 10000
+execute store result score @s rt_delta_x positioned ^ ^ ^.1 run data get entity @e[tag=rt_tracer, limit=1, sort=nearest] Pos[0] 10000
+execute store result score @s rt_delta_y positioned ^ ^ ^.1 run data get entity @e[tag=rt_tracer, limit=1, sort=nearest] Pos[1] 10000
+execute store result score @s rt_delta_z positioned ^ ^ ^.1 run data get entity @e[tag=rt_tracer, limit=1, sort=nearest] Pos[2] 10000
 
 scoreboard players operation @s rt_delta_x -= @s rt_original_x
 scoreboard players operation @s rt_delta_y -= @s rt_original_y
@@ -28,3 +28,5 @@ execute if score @s rt_progress_direction matches 0 run scoreboard players opera
 execute if score @s rt_progress_direction matches 2 run scoreboard players operation @s rt_progress_sign /= @s rt_abs_y
 execute if score @s rt_progress_direction matches 1 run scoreboard players operation @s rt_progress_sign /= @s rt_abs_z
 scoreboard players operation @s rt_progress_sign *= 10000 const
+
+kill @e[tag=rt_tracer]
