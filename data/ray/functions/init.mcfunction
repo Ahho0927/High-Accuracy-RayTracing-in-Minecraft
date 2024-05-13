@@ -17,20 +17,17 @@ scoreboard objectives add rt_progress_sign dummy
 
 scoreboard objectives add rt_for_index dummy
 
-scoreboard objectives add rt_start dummy
+scoreboard objectives add rt_parameter dummy
 scoreboard objectives add rt_difference dummy
 
-scoreboard objectives add rt_parameter dummy
 scoreboard objectives add rt_result_x dummy
 scoreboard objectives add rt_result_y dummy
 scoreboard objectives add rt_result_z dummy
 
-scoreboard objectives add rt_parameter_integer dummy
 scoreboard objectives add rt_result_x_integer dummy
 scoreboard objectives add rt_result_y_integer dummy
 scoreboard objectives add rt_result_z_integer dummy
 
-scoreboard objectives add rt_parameter_decimal dummy
 scoreboard objectives add rt_result_x_decimal dummy
 scoreboard objectives add rt_result_y_decimal dummy
 scoreboard objectives add rt_result_z_decimal dummy
