@@ -19,6 +19,7 @@ scoreboard objectives add rt_for_index dummy
 
 scoreboard objectives add rt_parameter dummy
 scoreboard objectives add rt_difference dummy
+scoreboard objectives add rt_calc dummy
 
 scoreboard objectives add rt_result_x dummy
 scoreboard objectives add rt_result_y dummy

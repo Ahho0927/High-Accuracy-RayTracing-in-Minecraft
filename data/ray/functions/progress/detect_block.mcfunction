@@ -1,2 +1,2 @@
-$say $(x_integer).$(x_decimal) $(y_integer).$(y_decimal) $(z_integer).$(z_decimal)
-$particle flame $(x_integer).$(x_decimal) $(y_integer).$(y_decimal) $(z_integer).$(z_decimal) 0 0 0 0 0
+$say $(x_integer).$(x_front_0)$(x_decimal) $(y_integer).$(y_front_0)$(y_decimal) $(z_integer).$(z_front_0)$(z_decimal)
+$particle end_rod $(x_integer).$(x_front_0)$(x_decimal) $(y_integer).$(y_front_0)$(y_decimal) $(z_integer).$(z_front_0)$(z_decimal) 0 0 0 0 0
